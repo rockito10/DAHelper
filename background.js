@@ -28,22 +28,14 @@ function addTagsAndTitleOnCurrentTab(tags) {
                 target: {
                     tabId: tab.id,
                 },
-                func: addTagsAndTitleOnDocument,
-                args: [tags, title, n], //tags and title
+                func: addTagsOnDocument,
+                args: [tags, n], //tags and title
             });
         });
     });
 }
-function addTagsAndTitleOnDocument(tags, title, nextSketchId) {
-    const titleInput = document.getElementsByClassName("_1H6JV y7nva")[2];
-    // const titleInput = document.getElementById("app-root-11") as HTMLInputElement;
-    titleInput.addEventListener("click", () => {
-        // force title
-        titleInput.value = title;
-    });
+function addTagsOnDocument(tags, nextSketchId) {
     const tagsInput = document.getElementsByClassName("_1H6JV")[3]; // DA input
-    // const tagsInput = document.getElementById("app-root-12"); // DA input
-    // paste event
     // paste event
     const pasteEvent = new ClipboardEvent("paste", {
         bubbles: true,
@@ -55,8 +47,4 @@ function addTagsAndTitleOnDocument(tags, title, nextSketchId) {
     // tags and replace data of clipboard to them
     pasteEvent.clipboardData.setData("text/plain", tags);
     tagsInput.dispatchEvent(pasteEvent);
-    const submit = document.getElementsByClassName("_17yyH")[0];
-    submit.addEventListener("click", () => {
-        chrome.storage.local.set({ nextSketchId: nextSketchId + 1 });
-    });
 }
