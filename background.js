@@ -43,14 +43,7 @@ function addTagsAndTitleOnCurrentTab(tags) {
   let n = 0;
   chrome.storage.local.get("nextSketchId", (data) => {
     // get the id of the next drawing
-    n = data.nextSketchId;
-    if (n == null)
-      console.error(
-        "nextSketchId missing, please set it before using the extension. Use 'chrome.storage.local.set({ nextSketchId: <NUMBER> });' "
-      );
-    if (n == null) return;
 
-    const title = `Sketch #${n}`;
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const tab = tabs[0];
       if (!tab || tab.id === undefined) return;
@@ -59,12 +52,12 @@ function addTagsAndTitleOnCurrentTab(tags) {
           tabId: tab.id,
         },
         func: addTagsOnDocument,
-        args: [tags, n], //tags and title
+        args: [tags], //tags and title
       });
     });
   });
 }
-function addTagsOnDocument(tags, nextSketchId) {
+function addTagsOnDocument(tags) {
   const tagsInput = document.getElementsByClassName("_1H6JV")[3]; // DA input
   // paste event
   const pasteEvent = new ClipboardEvent("paste", {
